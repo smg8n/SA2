@@ -1,0 +1,14 @@
+Child with PID 119939 and number 101 has launched at time 0 seconds and 1 nanoseconds
+Child with PID 119940 and number 105 has launched at time 0 seconds and 2 nanoseconds
+Child with PID:119939 has been terminated after 0 seconds and 3237 nanoseconds
+Child with PID 119941 and number 109 has launched at time 0 seconds and 3238 nanoseconds
+Child with PID:119940 has been terminated after 0 seconds and 3238 nanoseconds
+Child with PID 119942 and number 113 has launched at time 0 seconds and 3239 nanoseconds
+Child with PID:119941 has been terminated after 0 seconds and 6014 nanoseconds
+Child with PID 119943 and number 117 has launched at time 0 seconds and 6015 nanoseconds
+Child with PID:119942 has been terminated after 0 seconds and 6053 nanoseconds
+Child with PID:119943 has been terminated after 0 seconds and 10925 nanoseconds
+The prime numbers are: 
+101 109 113 
+non prime numbers are: 
+-105 -117 
