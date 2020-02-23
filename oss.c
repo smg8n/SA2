@@ -270,7 +270,7 @@ int main(int argc, char* argv[]){
                 execvp(args[0], args);
             }
             id2pid[childfinish] = pid;
-            fprintf(fn, "Child with PID %d , id %d and number %d has launched at time %d seconds and %d nanoseconds\n" ,pid, childfinish, primenumberarray[childfinish], timer.seconds, timer.nanoseconds);
+            fprintf(fn, "Child with PID %d, Child %d and number %d has launched at time %d seconds and %d nanoseconds\n" ,pid, childfinish, primenumberarray[childfinish], timer.seconds, timer.nanoseconds);
             childfinish++;
             activechild++;
         }
