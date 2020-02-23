@@ -58,11 +58,11 @@ static void outputSummary()
     }
     fprintf(fn, "\ndid not have the time to make a determination  numbers are: \n");
     for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] == -1)
+      if (prime_array[i] == -1 || prime_array[i] ==0 )
         fprintf(fn,"%d ", pnumber+(i*incrementnumber));
     }
   // No matter how it terminated, oss should also output the value of the shared clock to the output file.
-  fprintf(fn, "\nfinished at time seconds %d nanoseconds %d\n",  shared_memory[0],  shared_memory[1]);
+  fprintf(fn, "\nfinished at time %d seconds %d nanoseconds \n",  shared_memory[0],  shared_memory[1]);
   fclose(fn);
 }
 
@@ -241,7 +241,7 @@ int main(int argc, char* argv[]){
                     break;
                   }
                 }
-                fprintf(fn, "Child with PID:%d , id:%d has exited after %d seconds and %d nanoseconds. status=%d\n",pid, id, timer.seconds, timer.nanoseconds, exitStatus);
+                fprintf(fn, "Child with PID:%d , Child:%d has exited after %d seconds and %d nanoseconds.\n",pid, id, timer.seconds, timer.nanoseconds);
                 if(exitStatus == 0){
                     primes[pcount] = prime_array[id];
                     pcount++;
@@ -275,37 +275,7 @@ int main(int argc, char* argv[]){
             activechild++;
         }
     }
-
-    fprintf(fn, "The prime numbers are: \n");
-    for(i = 0; i < pcount; i++){
-        fprintf(fn, "%d ", primes[i]);
-    }
-    fprintf(fn, "\nnon prime numbers are: \n");
-    for(i = 0; i < npcount; i++){
-        fprintf(fn, "%d ", -noprimes[i]);
-    }
-    fprintf(fn, "\nfinished at time seconds %d nanoseconds %d\n",  timer.seconds,  timer.nanoseconds);
-
-    // Lastly, it should display a list of the numbers
-    // that it determined were prime and the numbers that it determined were not prime, followed by a list of numbers
-    // that it did not have the time to make a determination.
-    fprintf(fn, "The prime numbers are: \n");
-    for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] > 0)
-        fprintf(fn,"%d", prime_array[i]); 
-    }
-    fprintf(fn, "\nnon prime numbers are: \n");
-    for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] != -1 && prime_array[i] < 0)
-        fprintf(fn,"%d", -1*prime_array[i]); 
-    }
-    fprintf(fn, "\ndid not have the time to make a determination  numbers are: \n");
-    for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] == -1)
-        fprintf(fn,"%d", pnumber+(i*incrementnumber));
-    }
-
-    fclose(fn);
+    outputSummary();
 /*
     jmp_buf ctrlCjmp;
     jmp_buf timerjmp;
