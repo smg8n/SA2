@@ -185,10 +185,13 @@ int main(int argc, char* argv[]){
     /*Catch alarm handle with timer Handler*/
     signal (SIGALRM, timerHandler);
 
+    alarm( 2 ); // set timeout of 2 seconds.
+
     jmp_buf ctrlCjmp;
     jmp_buf timerjmp;
     /*Jump back to main enviroment where children are launched
 *      * but before the wait*/
+/*
     if(setjmp(ctrlCjmp) == 1){
         kill(pid, SIGKILL);
     }
@@ -196,6 +199,7 @@ int main(int argc, char* argv[]){
     if(setjmp(timerjmp) == 1){
         kill(pid, SIGKILL);
     }
+*/
 
     return 0;
 }
