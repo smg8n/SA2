@@ -30,8 +30,8 @@ int main(int argc, char* argv[]){
     }
 
     if(flag == 0)
-        return(0);
+        return(0); // number is a prime number
     else if(flag == 1)
-        return(1);
+        return(1); // number is NOT a prime number
 
 }
