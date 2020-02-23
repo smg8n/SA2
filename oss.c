@@ -19,13 +19,29 @@ struct Clock{
     int nanoseconds;
     long totaltimecomsumed;
 };
+
+static int shmid = 0;
+static char* shared_memory;
+
+/* remove shared mem and exit */
+void removeShmAndExit()
+{
+  /* Detach the shared memory segment.  */ 
+  shmdt (shared_memory); 
+
+  /* Deallocate the shared memory segment.  */ 
+  shmctl (shmid, IPC_RMID, 0); 
+
+  kill(-1*getpid(), SIGKILL) ; // should kill oss process and any child user processes.
+  exit(0); // this is unnecessary
+}
+
 /*Function handles ctrl c signal */
 void ctrlCHandler(){
     char errorArr[200];
     snprintf(errorArr, 200, "\n\nCTRL+C signal caught, killing all processes and releasing shared memory.");
     perror(errorArr);
-    exit(0);
-
+   removeShmAndExit();
 }
 
 /*Function handles timer alarm signal */
@@ -33,10 +49,9 @@ void timerHandler(){
     char errorArr[200];
     snprintf(errorArr, 200, "\n\ntimer interrupt triggered, killing all processes and releasing shared memory.");
     perror(errorArr);
-    exit(0);
-
-
+    removeShmAndExit();
 }
+
 int main(int argc, char* argv[]){
     int options= 0;		// Placeholder for arguments
     int maxchilderns = 4;	// Max total number of child processes oss wil create.
@@ -117,8 +132,18 @@ int main(int argc, char* argv[]){
     }
 
     char* paddress = (char*)(shmat(shmid, 0, 0));
+    shared_memory = paddress;
     int* ptime = (int*)(paddress);
 
+
+    /*Catch ctrl+c signal and handle with
+    *      * ctrlChandler*/
+    signal(SIGINT, ctrlCHandler);
+
+    /*Catch alarm handle with timer Handler*/
+    signal (SIGALRM, timerHandler);
+
+    alarm( 2 ); // set timeout of 2 seconds.
 
 
     while(childfinish <= maxchilderns && exitcount < maxchilderns){
@@ -178,20 +203,10 @@ int main(int argc, char* argv[]){
     fprintf(fn, "\nfinished at time %f seconds \n",  timer.nanoseconds/1000000000.0);
 
     fclose(fn);
-    /*Catch ctrl+c signal and handle with
-    *      * ctrlChandler*/
-    signal(SIGINT, ctrlCHandler);
-
-    /*Catch alarm handle with timer Handler*/
-    signal (SIGALRM, timerHandler);
-
-    alarm( 2 ); // set timeout of 2 seconds.
-
+/*
     jmp_buf ctrlCjmp;
     jmp_buf timerjmp;
-    /*Jump back to main enviroment where children are launched
-*      * but before the wait*/
-/*
+    //Jump back to main enviroment where children are launched but before the wait
     if(setjmp(ctrlCjmp) == 1){
         kill(pid, SIGKILL);
     }
@@ -200,6 +215,12 @@ int main(int argc, char* argv[]){
         kill(pid, SIGKILL);
     }
 */
+
+  /* Detach the shared memory segment.  */ 
+  shmdt (shared_memory); 
+
+  /* Deallocate the shared memory segment.  */ 
+  shmctl (shmid, IPC_RMID, 0); 
 
     return 0;
 }
