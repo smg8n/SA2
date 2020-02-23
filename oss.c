@@ -327,5 +327,5 @@ int main(int argc, char* argv[]){
   shmctl (shmid, IPC_RMID, 0); 
   shmctl (shmid_array, IPC_RMID, 0); 
 
-   return 0;
+  return 0;
 }
