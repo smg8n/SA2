@@ -96,7 +96,7 @@ void removeShmAndExit()
 }
 
 /*Function handles ctrl c signal */
-void ctrlCHandler(){
+void ctrlCHandler(int signum){
     char errorArr[200];
     snprintf(errorArr, 200, "\n\nCTRL+C signal caught, killing all processes and releasing shared memory.");
     perror(errorArr);
@@ -105,7 +105,7 @@ void ctrlCHandler(){
 }
 
 /*Function handles timer alarm signal */
-void timerHandler(){
+void timerHandler(int signum){
     char errorArr[200];
     snprintf(errorArr, 200, "\n\ntimer interrupt triggered, killing all processes and releasing shared memory.");
     perror(errorArr);

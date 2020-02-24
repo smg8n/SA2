@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
         curTime.nanoseconds = cTimeGrab[1];
         if ( ((curTime.seconds*1000000000+curTime.nanoseconds)-(initTime.seconds*1000000000+initTime.nanoseconds)) >= 1000000 ){
             // I do not want any child process to run for any more than 1 millisecond of simulated time. 1000000 ns == 1 millisec
-            printf("failed to compute %d in alloted time!!\n" , number);
+            //printf("failed to compute %d in alloted time!!\n" , number);
             prime_array[my_id-1] = -1; // if more than a millisecond has passed in this time, it should finish by putting -1 in its associated location in the shared memory array.
             shmdt(cTimeGrab);
             shmdt(prime_array);
