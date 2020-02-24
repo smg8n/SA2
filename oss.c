@@ -47,7 +47,8 @@ static void outputSummary()
     // that it determined were prime and the numbers that it determined were not prime, followed by a list of numbers
     // that it did not have the time to make a determination.
     int printHeader = 1;
-    for (int i=0;i<maxchildren; i++) {
+    int i;
+    for (i=0;i<maxchildren; i++) {
       if (prime_array[i] > 0) {
         if (printHeader) { 
          printHeader = 0;
@@ -57,7 +58,7 @@ static void outputSummary()
      }
     }
     printHeader = 1;
-    for (int i=0;i<maxchildren; i++) {
+    for (i=0;i<maxchildren; i++) {
       if (prime_array[i] != -1 && prime_array[i] < 0) {
         if (printHeader) { 
          printHeader = 0;
@@ -67,7 +68,7 @@ static void outputSummary()
      }
     }
     printHeader = 1;
-    for (int i=0;i<maxchildren; i++) {
+    for (i=0;i<maxchildren; i++) {
       if (prime_array[i] == -1 || prime_array[i] ==0 ) {
         if (printHeader) { 
          printHeader = 0;
@@ -214,7 +215,7 @@ int main(int argc, char* argv[]){
     int *prime_array = (int*)(shmat(shmid_array, 0, 0));
     shared_memory_array = prime_array; // save it so it can be detached later on
     // initialize to 0
-    for (int i=0;i<maxchildren; i++) {
+    for (i=0;i<maxchildren; i++) {
       prime_array[i] = 0;
     }
     //
