@@ -46,20 +46,35 @@ static void outputSummary()
     // Lastly, it should display a list of the numbers
     // that it determined were prime and the numbers that it determined were not prime, followed by a list of numbers
     // that it did not have the time to make a determination.
-    fprintf(fn, "The prime numbers are: \n");
+    int printHeader = 1;
     for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] > 0)
+      if (prime_array[i] > 0) {
+        if (printHeader) { 
+         printHeader = 0;
+         fprintf(fn, "The prime numbers are: \n");
+        }
         fprintf(fn,"%d ", prime_array[i]); 
+     }
     }
-    fprintf(fn, "\nnon prime numbers are: \n");
+    printHeader = 1;
     for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] != -1 && prime_array[i] < 0)
-        fprintf(fn,"%d ", -1*prime_array[i]); 
+      if (prime_array[i] != -1 && prime_array[i] < 0) {
+        if (printHeader) { 
+         printHeader = 0;
+         fprintf(fn, "\nnon prime numbers are: \n");
+        }
+        fprintf(fn,"%d ", prime_array[i]); 
+     }
     }
-    fprintf(fn, "\ndid not have the time to make a determination  numbers are: \n");
+    printHeader = 1;
     for (int i=0;i<maxchildren; i++) {
-      if (prime_array[i] == -1 || prime_array[i] ==0 )
+      if (prime_array[i] == -1 || prime_array[i] ==0 ) {
+        if (printHeader) { 
+         printHeader = 0;
+         fprintf(fn, "\ndid not have the time to make a determination  numbers are: \n");
+        }
         fprintf(fn,"%d ", pnumber+(i*incrementnumber));
+      }
     }
   // No matter how it terminated, oss should also output the value of the shared clock to the output file.
   fprintf(fn, "\nfinished at time %d seconds %d nanoseconds \n",  shared_memory[0],  shared_memory[1]);
@@ -94,7 +109,7 @@ void timerHandler(){
     char errorArr[200];
     snprintf(errorArr, 200, "\n\ntimer interrupt triggered, killing all processes and releasing shared memory.");
     perror(errorArr);
-   outputSummary();
+    outputSummary();
     removeShmAndExit();
 }
 
@@ -264,7 +279,7 @@ int main(int argc, char* argv[]){
             else if(pid == 0){
                 char convertid[15];
                 char convertednumber[15];
-                sprintf(convertid, "%d", childfinish);
+                sprintf(convertid, "%d", childfinish+1);
                 sprintf(convertednumber, "%d", primenumberarray[childfinish]);
                 char *args[] = {"./user", convertid, convertednumber, NULL};
                 execvp(args[0], args);
